@@ -5,11 +5,15 @@ Created on Sun Jul 12 14:48:23 2020
 @author: Rafael Arenhart
 """
 
+import os
+
 import numpy as np
 from numba import njit, prange
 
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+
 isotropic_templates = np.zeros(256, dtype = np.uint8)
-with open('minkowsky_templates.csv', mode = 'r') as file:
+with open(os.path.join(CURRENT_PATH, 'minkowsky_templates.csv'), mode = 'r') as file:
     for line in file:
         index, n, *templates = [int(i.strip()) for i in line.strip().split(',')]
         for template in templates:
@@ -20,7 +24,7 @@ for i, j, k in [(a, b, c) for a in range(2) for b in range(2) for c in range(2)]
     indexing_template[i, j, k] = 2 ** (i + 2*j + 4*k)
 
 
-with open('minkowsy_values.csv', mode = 'r') as file:
+with open(os.path.join(CURRENT_PATH, 'minkowsy_values.csv'), mode = 'r') as file:
     header = file.readline().strip().split(',')
     minkowsky_names = [i.strip() for i in header[1:]]
     divisors = file.readline().strip().split(',')
